@@ -1,50 +1,104 @@
 <template>
 	<div :class="timerClass">
 		<div class="row">
-			<input type="text" placeholder="Title" />
+			<input v-show="editingTitle" type="text" placeholder="Title" v-model="title" @blur="hideTitleInput" ref="title" @keyup.enter="$refs.title.blur()" />
+			<h3 v-show="!editingTitle" @click="showTitleInput">{{title}}</h3>
 		</div>
+
 		<div class="row time"> {{displayTime}} </div>
+
 		<div class="row">
 			<button @click="startPause">{{ isRunning ? 'Pause' : 'Start'}}</button>
 			<button @click="reset" class="ghost">Reset</button>
 		</div>
-		<div class="close" @click="doClose"> X </div>
+
+		<div class="align-top-right">
+			<div class="floating-icons">
+				<div class="grow"> </div>
+				<div class="icon settings" @click="showSettings = !showSettings"> ⚙️️ </div>
+				<div class="icon close" @click="doClose"> 🗑️ </div>
+			</div>
+			<div class="settings-menu" v-show="showSettings">
+				<label> Counting {{countUp ? 'up' : 'down'}}
+					<OnOff @toggle="countUp = !countUp" :initial="true"></OnOff>
+				</label>
+				<input type="number" v-model="duration" :disabled="countUp" />
+				<label> {{showTenths ? 'Show' : 'Hide'}} tenths
+					<OnOff @toggle="showTenths = !showTenths" :initial="false"></OnOff>
+				</label>
+			</div>
+		</div>
 	</div>
 </template>
 
 
 <script>
-import { formatNumber } from '../utils/funcs.js';
+import OnOff from './OnOff.vue'
+import { formatNumber, getClockComponents } from '../utils/funcs.js';
 const STOPPED = 1, STARTED = 2, PAUSED = 3;
 export default {
+	components: { OnOff },
 	data: () => ({
 		state: STOPPED,
 		seconds: 0,
 		prevSeconds: 0,
 		intervalId: null,
-		startTime: null
+		startTime: null,
+		countUp: true,
+		duration: 10,   // duration in seconds, used for counting down
+		timeLeft: 10,
+		showSettings: false,
+		title: 'Timer',
+		editingTitle: false,
+		showTenths: false
 	}),
 	computed: {
 		timerClass() {
-			return "timer " + (this.isRunning ? 'running' : 'paused')
+			return "timer " + (this.isRunning ? 'running' : 'paused') + ' ' + (this.isOverdue ? 'overdue' : '')
 		},
 		displayTime() {
-			let x = Math.floor(this.seconds + this.prevSeconds);
-			let s = x % 60;
-			x = (x - s) / 60;
-			let m = x % 60;
-			let h = (x - m) / 60;
-			if( h === 0 )
-				return formatNumber(m) + ':' + formatNumber(s)
-			return `${formatNumber(h)}:${formatNumber(m)}:${formatNumber(s)}`
+			let total = this.seconds + (this.countUp ? this.prevSeconds : 0)
+			let t = getClockComponents(total)
+
+			let result = `${formatNumber(t.minutes)}:${formatNumber(t.seconds)}`
+			if( t.hours > 0 )
+				result = formatNumber(t.hours) + ':' + result
+			if( this.showTenths )
+				result += '.' + t.tenths
+
+			return t.sign + result
+			// if( t.hours === 0)
+			// 	return t.sign + formatNumber(t.minutes) + ':' + formatNumber(t.seconds) + '.' + t.tenths
+			// return `${t.sign}${formatNumber(t.hours)}:${formatNumber(t.minutes)}:${formatNumber(t.seconds)}.${t.tenths}`
+
+			// let total = this.seconds + (this.countUp ? this.prevSeconds : 0)
+			// let x = Math.floor(total)
+			// let tenths = Math.round((total - x) * 10) / 10
+			// if( tenths === 0 ) tenths = '0'
+			// tenths = '.' + tenths
+			// let sign = x >= 0 ? '' : '-'
+			// x = Math.abs(x)
+			// let s = x % 60;
+			// x = (x - s) / 60;
+			// let m = x % 60;
+			// let h = (x - m) / 60;
+			// if( h === 0 )
+			// 	return sign + formatNumber(m) + ':' + formatNumber(s)
+			// return `${sign}${formatNumber(h)}:${formatNumber(m)}:${formatNumber(s)}`
 		},
-		isRunning() { return this.state === STARTED }
+		isRunning() { return this.state === STARTED },
+		isOverdue() { return this.seconds < 0 }
 	},
 	methods: {
 		reset() {
 			this.stop();
-			this.seconds = 0;
 			this.prevSeconds = 0;
+			if( this.countUp ) {
+				this.seconds = 0;
+			} else {
+				this.seconds = this.duration;
+				this.timeLeft = this.duration;
+			}
 		},
 		startPause() {
 			if( this.state === STOPPED || this.state === PAUSED ) {
@@ -54,17 +108,34 @@ export default {
 			}
 		},
 		start() {
-			this.startTime = (new Date()).getTime();
+			const DELAY = 50
 			this.state = STARTED;
-			this.intervalId = window.setInterval(() => {
-				let now = (new Date()).getTime()
-				this.seconds = (now - this.startTime) / 1000;
-				// console.log('interval', this.seconds);
-			}, 250)
+			if( this.countUp ) {
+				this.startTime = (new Date()).getTime();
+				this.intervalId = window.setInterval(() => {
+					let now = (new Date()).getTime()
+					this.seconds = (now - this.startTime) / 1000;
+					// console.log('interval', this.seconds);
+				}, DELAY)
+			} else {
+				console.log('count down');
+				this.startTime = (new Date()).getTime();
+				this.intervalId = window.setInterval(() => {
+					let now = (new Date()).getTime()
+					let elapsed = now - this.startTime
+					let diff = this.timeLeft - elapsed
+					this.seconds = this.timeLeft + diff / 1000;
+				}, DELAY)
+			}
 		},
 		stop() {
 			this.prevSeconds += this.seconds;
-			this.seconds = 0;
+			this.timeLeft;
+			if( this.countUp ) {
+				this.seconds = 0
+			} else {
+				this.timeLeft = this.seconds
+			}
 			this.state = STOPPED;
 			window.clearInterval(this.intervalId);
 			this.intervalId = null;
@@ -73,6 +144,17 @@ export default {
 		doClose() {
 			this.reset()
 			this.$emit('close')
+		},
+
+		showTitleInput() {
+			this.editingTitle = true;
+			this.$nextTick(() => {
+				this.$refs.title.focus()
+				this.$refs.title.select()
+			})
+		},
+		hideTitleInput() {
+			this.editingTitle = false
 		}
 	}
 }
@@ -80,29 +162,79 @@ export default {
 
 
 <style lang="css" scoped>
+.timer {
+	--running-bg: #C9F7FF;
+	--paused-bg: #DEEBED;
+	--hover-icon-bg: lightgray;
+	--icon-bg: #F7F7F7;
+	--button-bg: #A7E1F3;
+	--button-border: #1189AF;
+	--ghost-bg: white;
+	--button-hover: #77CFEB;
+	--overdue-bg: #FFE1E9;
+}
+
 .running {
-	background-color: #C9F7FF;
+	background-color: var(--running-bg);
 }
 .paused {
-	background-color: #DEEBED;
+	background-color: var(--paused-bg);
 }
-.timer .close {
+.overdue {
+	background-color: var(--overdue-bg);
+}
+
+
+.align-top-right {
 	position: absolute;
 	top: 0px;
 	right: 0px;
+	display: flex;
+	flex-direction: column;
+	z-index: 1;
+	/* justify-content: flex-start; */
+	/* text-align: right; */
+}
+.grow {
+	flex-grow: 1;
+}
+.floating-icons {
+	/* position: absolute;
+	top: 0px;
+	right: 0px; */
 	font-family: Courier New;
 	font-weight: bold;
-	background-color: white;
+	font-size: 1.2em;
+	display: flex;
+	flex-direction: row;
+}
+.floating-icons > .icon {
+	background-color: var(--icon-bg);
 	border: 1px solid lightgray;
 	border-radius: 0.2em;
-	margin: 0.1em;
 	padding: 0.2em;
+	margin: 0.1em;
 	transition: all 1s;
 }
-.timer .close:hover {
+.floating-icons :hover {
 	cursor: pointer;
-	background-color: lightgray;
+	background-color: var(--hover-icon-bg);
 }
+
+.settings-menu {
+	background-color: var(--icon-bg);
+	font-size: 1.05em;
+	padding: 0.2em 1em;
+	display: inline-flex;
+	flex-direction: column;
+	text-align: left;
+	width: 8em;
+	margin-top: 0em;
+	border: 1px solid lightgray;
+	border-radius: 0.2em;
+}
+
+
 .timer {
 	position: relative;
 	border: 1px solid gray;
@@ -114,20 +246,25 @@ export default {
 	font-family: Courier New;
 	font-weight: bold;
 }
+.timer h3 {
+	margin: 0em;
+	font-weight: normal;
+	font-size: 1.1em;
+}
 button {
 	margin: 0.3em;
 	padding: 0.7em 1.5em;
 	font-size: 1em;
 	border-radius: 0.4em;
-	background-color: #A7E1F3;
-	border-color: #1189AF;
+	background-color: var(--button-bg);
+	border-color: var(--button-border);
 	transition: all 0.6s;
 }
 button.ghost {
-	background-color: white;
+	background-color: var(--ghost-bg);
 }
 button:hover {
-	background-color: #77CFEB;
+	background-color: var(--button-hover);
 	cursor: pointer;
 	/* border-color: #1189AF */
 }
