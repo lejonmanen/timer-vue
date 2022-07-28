@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "cd dist/ && git init && git add --all && git commit -m Deploy && git remote add origin https://github.com/lejonmanen/timer-vue.git && git push origin main:gh-pages && rm -rf .git/"
   },
   "dependencies": {
     "vue": "^3.2.25"
