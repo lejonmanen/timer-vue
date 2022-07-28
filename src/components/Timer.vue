@@ -2,7 +2,7 @@
 	<div :class="timerClass">
 		<div class="row">
 			<input v-show="editingTitle" type="text" placeholder="Title" v-model="title" @blur="hideTitleInput" ref="title" @keyup.enter="$refs.title.blur()" />
-			<h3 v-show="!editingTitle" @click="showTitleInput">{{title}}</h3>
+			<h3 v-show="!editingTitle" @click="showTitleInput">{{title}} 🖊️ </h3>
 		</div>
 
 		<div class="row time"> {{displayTime}} </div>
@@ -22,7 +22,7 @@
 				<label> Counting {{countUp ? 'up' : 'down'}}
 					<OnOff @toggle="countUp = !countUp" :initial="true"></OnOff>
 				</label>
-				<input type="number" v-model="duration" :disabled="countUp" />
+				<input type="text" v-model="durationRaw" :disabled="countUp" />
 				<label> {{showTenths ? 'Show' : 'Hide'}} tenths
 					<OnOff @toggle="showTenths = !showTenths" :initial="false"></OnOff>
 				</label>
@@ -45,7 +45,8 @@ export default {
 		intervalId: null,
 		startTime: null,
 		countUp: true,
-		duration: 10,   // duration in seconds, used for counting down
+		// duration: 10,   // duration in seconds, used for counting down
+		durationRaw: '1',  // duration in minutes
 		timeLeft: 10,
 		showSettings: false,
 		title: 'Timer',
@@ -55,6 +56,21 @@ export default {
 	computed: {
 		timerClass() {
 			return "timer " + (this.isRunning ? 'running' : 'paused') + ' ' + (this.isOverdue ? 'overdue' : '')
+		},
+		duration() {
+			let ts = this.durationRaw.split(':')
+			let s = 0, m = 0, h = 0
+			if( ts.length < 2 ) {
+				m = this.convertStrToNum(ts[0])
+			} else if( ts.length == 2 ) {
+				m = this.convertStrToNum(ts[0])
+				s = this.convertStrToNum(ts[1])
+			} else {  //  > 2
+				h = this.convertStrToNum(ts[0])
+				m = this.convertStrToNum(ts[1])
+				s = this.convertStrToNum(ts[2])
+			}
+			return h * 3600 + m * 60 + s;
 		},
 		displayTime() {
 			let total = this.seconds + (this.countUp ? this.prevSeconds : 0)
@@ -155,6 +171,14 @@ export default {
 		},
 		hideTitleInput() {
 			this.editingTitle = false
+		},
+		convertStrToNum(str) {
+			try {
+				let n = Number(str)
+				return isNaN(n) ? 0 : n;
+			} catch {
+				return 0
+			}
 		}
 	}
 }
@@ -199,14 +223,14 @@ export default {
 	flex-grow: 1;
 }
 .floating-icons {
-	/* position: absolute;
-	top: 0px;
-	right: 0px; */
+	/* position: relative;
+	z-index: 10; */
 	font-family: Courier New;
 	font-weight: bold;
 	font-size: 1.2em;
 	display: flex;
 	flex-direction: row;
+	user-select: none;
 }
 .floating-icons > .icon {
 	background-color: var(--icon-bg);
@@ -216,12 +240,14 @@ export default {
 	margin: 0.1em;
 	transition: all 1s;
 }
-.floating-icons :hover {
+.floating-icons .icon:hover {
 	cursor: pointer;
 	background-color: var(--hover-icon-bg);
 }
 
 .settings-menu {
+	/* position: relative;
+	z-index: 20; */
 	background-color: var(--icon-bg);
 	font-size: 1.05em;
 	padding: 0.2em 1em;
@@ -250,6 +276,9 @@ export default {
 	margin: 0em;
 	font-weight: normal;
 	font-size: 1.1em;
+}
+.timer h3:hover {
+	cursor: pointer;
 }
 button {
 	margin: 0.3em;

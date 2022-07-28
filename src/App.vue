@@ -4,10 +4,10 @@
 
 <template>
 	<div id="app">
-		<button class="ghost"
-			@click="addTimer">Add timer</button>
 		<Timer v-for="t in ts" :key="t"
 			@close="removeTimer(t)"/>
+		<button class="ghost"
+			@click="addTimer">Add timer</button>
 	</div>
 </template>
 
