@@ -8,15 +8,19 @@
 		:isTop="index === 0"
 			@close="remove(t.id)"
 			@up="moveUp(t.id)" />
+
 		<button class="ghost"
 			@click="addTimer">Add timer</button>
 		<button class="ghost"
 			@click="addText">Add note</button>
+
+		<ThemeSwitcher />
 	</div>
 </template>
 
 <script>
 import Widget from './components/Widget.vue'
+import ThemeSwitcher from './components/ThemeSwitcher.vue'
 
 export default {
 	name: 'App',
@@ -28,13 +32,14 @@ export default {
 	}),
 	methods: {
 		addTimer() {
-			let id = this.getNewId(this.ts)
-			let o = { type: 'timer', id: id }
-			this.ts.push(o)
+			this.addWidget('timer')
 		},
 		addText() {
+			this.addWidget('note')
+		},
+		addWidget(type) {
 			let id = this.getNewId(this.ts)
-			let o = { type: 'note', id: id }
+			let o = { type: type, id: id }
 			this.ts.push(o)
 		},
 		remove(id) {

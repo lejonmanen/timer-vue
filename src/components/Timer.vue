@@ -174,6 +174,9 @@ export default {
 
 
 <style lang="css" scoped>
+.timerClass {
+	color: var(--text);
+}
 .running {
 	background-color: var(--running-bg);
 }

@@ -19,9 +19,10 @@ export default {
 
 <style>
 .widget {
-
+    color: var(--text);
 }
 .widget button {
+    color: var(--text);
 	margin: 0.3em;
 	padding: 0.7em 1.5em;
 	font-size: 1em;

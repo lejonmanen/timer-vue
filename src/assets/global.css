@@ -1,8 +1,37 @@
+/* Theme colors */
+:root {
+	--running-bg: #C9F7FF;
+	--paused-bg: #DEEBED;
+	--text: #2C3E50;
+	--hover-icon-bg: lightgray;
+	--icon-bg: #F7F7F7;
+	--button-bg: #A7E1F3;
+	--button-border: #1189AF;
+	--ghost-bg: transparent;
+	--button-hover: #77CFEB;
+	--overdue-bg: #FFE1E9;
+	--body-bg: #F3F3F3;
+}
+
+[data-theme="dark"] {
+	--running-bg: #2c3e50;
+	--paused-bg: #4E4E4E;
+	--text: #C9F7FF;
+	--hover-icon-bg: #3A3A3A;
+	--icon-bg: #141414;
+	--button-bg: #1189AF;
+	--button-border: #A7E1F3;
+	--ghost-bg: transparent;
+	--button-hover: #77CFEB;
+	--overdue-bg: #A02E4E;
+	--body-bg: #141414;
+}
+
 /* General styles */
 body {
 	margin: 0em;
 	padding: 1em;
-	background-color: #F3F3F3;
+	background-color: var(--body-bg);
 }
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -33,17 +62,6 @@ button:hover {
 
 
 /* Widget styles */
-:root {
-	--running-bg: #C9F7FF;
-	--paused-bg: #DEEBED;
-	--hover-icon-bg: lightgray;
-	--icon-bg: #F7F7F7;
-	--button-bg: #A7E1F3;
-	--button-border: #1189AF;
-	--ghost-bg: white;
-	--button-hover: #77CFEB;
-	--overdue-bg: #FFE1E9;
-}
 .running {
 	background-color: var(--running-bg);
 }
