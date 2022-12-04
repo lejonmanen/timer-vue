@@ -83,28 +83,11 @@ export default {
 				result += '.' + t.tenths
 
 			return t.sign + result
-			// if( t.hours === 0)
-			// 	return t.sign + formatNumber(t.minutes) + ':' + formatNumber(t.seconds) + '.' + t.tenths
-			// return `${t.sign}${formatNumber(t.hours)}:${formatNumber(t.minutes)}:${formatNumber(t.seconds)}.${t.tenths}`
-
-			// let total = this.seconds + (this.countUp ? this.prevSeconds : 0)
-			// let x = Math.floor(total)
-			// let tenths = Math.round((total - x) * 10) / 10
-			// if( tenths === 0 ) tenths = '0'
-			// tenths = '.' + tenths
-			// let sign = x >= 0 ? '' : '-'
-			// x = Math.abs(x)
-			// let s = x % 60;
-			// x = (x - s) / 60;
-			// let m = x % 60;
-			// let h = (x - m) / 60;
-			// if( h === 0 )
-			// 	return sign + formatNumber(m) + ':' + formatNumber(s)
-			// return `${sign}${formatNumber(h)}:${formatNumber(m)}:${formatNumber(s)}`
 		},
 		isRunning() { return this.state === STARTED },
 		isOverdue() { return this.seconds < 0 }
 	},
+
 	methods: {
 		reset() {
 			this.stop();

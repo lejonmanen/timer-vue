@@ -4,36 +4,45 @@
 
 <template>
 	<div id="app">
-		<Timer v-for="t in ts" :key="t"
-			@close="removeTimer(t)"/>
+		<Widget v-for="t in ts" :key="t.id" :type="t.type" :id="t.id"
+			@close="remove(t.id)" />
 		<button class="ghost"
 			@click="addTimer">Add timer</button>
+		<button class="ghost"
+			@click="addText">Add note</button>
 	</div>
 </template>
 
 <script>
-import Timer from './components/Timer.vue'
+import Widget from './components/Widget.vue'
 
 export default {
 	name: 'App',
 	components: {
-		Timer
+		Widget
 	},
 	data: () => ({
 		ts: [0]
 	}),
 	methods: {
 		addTimer() {
-			this.ts.push(this.getNewId(this.ts))
+			let id = this.getNewId(this.ts)
+			let o = { type: 'timer', id: id }
+			this.ts.push(o)
 		},
-		removeTimer(id) {
-			this.ts = this.ts.filter(i => i !== id);
+		addText() {
+			let id = this.getNewId(this.ts)
+			let o = { type: 'note', id: id }
+			this.ts.push(o)
+		},
+		remove(id) {
+			this.ts = this.ts.filter(o => o.id !== id);
 		},
 		getNewId(oldIds) {
 			let id;
 			do {
 				id = Math.random();
-			} while( oldIds.some(i => i === id) );
+			} while( oldIds.some(o => o.id === id) );
 			return id;
 		}
 	}
