@@ -27,6 +27,20 @@
 	--body-bg: #141414;
 }
 
+[data-theme="forest"] {
+	--running-bg: #358F35;
+	--paused-bg: #5F7C5F;
+	--text: #B6E7B6;
+	--hover-icon-bg: #8EA78E;
+	--icon-bg: #A7C3A7;
+	--button-bg: #6DB86D;
+	--button-border: #6DB86D;
+	--ghost-bg: transparent;
+	--button-hover: #26D126;
+	--overdue-bg: #779210;
+	--body-bg: #064806;
+}
+
 /* General styles */
 body {
 	margin: 0em;

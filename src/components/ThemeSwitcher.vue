@@ -4,6 +4,7 @@
         <div>
             <button @click="switchTheme('')" class="ghost"> Light </button>
             <button @click="switchTheme('dark')" class="ghost"> Dark </button>
+            <button @click="switchTheme('forest')" class="ghost"> Forest </button>
         </div>
     </div>
 </template>
