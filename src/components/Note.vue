@@ -7,6 +7,9 @@
         <div class="align-top-right">
             <div class="floating-icons">
                 <div class="grow"> </div>
+                <div v-if="!isTop" class="icon up" @click="$emit('up')">
+                    <UpArrow />
+                </div>
                 <div class="icon close" @click="$emit('close')"> 🗑️ </div>
             </div>
         </div>
@@ -14,9 +17,10 @@
 </template>
 
 <script>
-import upArrowSvg from '../assets/up-arrow.svg'
-
+import UpArrow from './svg/UpArrow.vue'
 export default {
+    components: { UpArrow },
+    props: ['isTop'],
     data: () => ({
         editingText: false,
 		text: "Click to change text"
@@ -58,7 +62,7 @@ export default {
 }
 
 
-.align-top-right {
+/* .align-top-right {
 	position: absolute;
 	top: 0px;
 	right: 0px;
@@ -68,8 +72,8 @@ export default {
 }
 .grow {
 	flex-grow: 1;
-}
-.floating-icons {
+} */
+/* .floating-icons {
 	font-family: Courier New;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -88,6 +92,12 @@ export default {
 .floating-icons .icon:hover {
 	cursor: pointer;
 	background-color: var(--hover-icon-bg);
+} */
+.icon.up {
+    /* height: 1em; */
+    display: grid;
+    /* justify-content: center; */
+    align-items: center;
 }
 
 </style>

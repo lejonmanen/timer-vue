@@ -15,6 +15,9 @@
 		<div class="align-top-right">
 			<div class="floating-icons">
 				<div class="grow"> </div>
+				<div v-if="!isTop" class="icon up" @click="$emit('up')">
+                    <UpArrow />
+                </div>
 				<div class="icon settings" @click="showSettings = !showSettings"> ⚙️️ </div>
 				<div class="icon close" @click="doClose"> 🗑️ </div>
 			</div>
@@ -33,11 +36,13 @@
 
 
 <script>
+import UpArrow from './svg/UpArrow.vue'
 import OnOff from './OnOff.vue'
 import { formatNumber, getClockComponents } from '../utils/funcs.js';
 const STOPPED = 1, STARTED = 2, PAUSED = 3;
 export default {
-	components: { OnOff },
+	components: { OnOff, UpArrow },
+	props: ['isTop'],
 	data: () => ({
 		state: STOPPED,
 		seconds: 0,
@@ -169,18 +174,6 @@ export default {
 
 
 <style lang="css" scoped>
-.timer {
-	--running-bg: #C9F7FF;
-	--paused-bg: #DEEBED;
-	--hover-icon-bg: lightgray;
-	--icon-bg: #F7F7F7;
-	--button-bg: #A7E1F3;
-	--button-border: #1189AF;
-	--ghost-bg: white;
-	--button-hover: #77CFEB;
-	--overdue-bg: #FFE1E9;
-}
-
 .running {
 	background-color: var(--running-bg);
 }
@@ -191,46 +184,8 @@ export default {
 	background-color: var(--overdue-bg);
 }
 
-
-.align-top-right {
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	display: flex;
-	flex-direction: column;
-	z-index: 1;
-	/* justify-content: flex-start; */
-	/* text-align: right; */
-}
-.grow {
-	flex-grow: 1;
-}
-.floating-icons {
-	/* position: relative;
-	z-index: 10; */
-	font-family: Courier New;
-	font-weight: bold;
-	font-size: 1.2em;
-	display: flex;
-	flex-direction: row;
-	user-select: none;
-}
-.floating-icons > .icon {
-	background-color: var(--icon-bg);
-	border: 1px solid lightgray;
-	border-radius: 0.2em;
-	padding: 0.2em;
-	margin: 0.1em;
-	transition: all 1s;
-}
-.floating-icons .icon:hover {
-	cursor: pointer;
-	background-color: var(--hover-icon-bg);
-}
-
 .settings-menu {
-	/* position: relative;
-	z-index: 20; */
+	z-index: 2;
 	background-color: var(--icon-bg);
 	font-size: 1.05em;
 	padding: 0.2em 1em;
@@ -242,7 +197,6 @@ export default {
 	border: 1px solid lightgray;
 	border-radius: 0.2em;
 }
-
 
 .timer {
 	position: relative;
@@ -263,21 +217,5 @@ export default {
 .timer h3:hover {
 	cursor: pointer;
 }
-button {
-	margin: 0.3em;
-	padding: 0.7em 1.5em;
-	font-size: 1em;
-	border-radius: 0.4em;
-	background-color: var(--button-bg);
-	border-color: var(--button-border);
-	transition: all 0.6s;
-}
-button.ghost {
-	background-color: var(--ghost-bg);
-}
-button:hover {
-	background-color: var(--button-hover);
-	cursor: pointer;
-	/* border-color: #1189AF */
-}
+
 </style>
