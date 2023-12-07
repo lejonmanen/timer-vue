@@ -55,7 +55,7 @@ export default {
 	font-weight: bold;
 	font-size: 1.2em;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	user-select: none;
 }
 .floating-icons > .icon {
@@ -64,7 +64,7 @@ export default {
 	border-radius: 0.2em;
 	padding: 0.2em;
 	margin: 0.1em;
-	transition: all 1s;
+	transition: all 0.6s;
 }
 .floating-icons .icon:hover {
 	cursor: pointer;

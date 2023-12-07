@@ -42,7 +42,7 @@ export default {
     position: relative;
     border: 1px solid gray;
     border-radius: 0.2em;
-    padding: 1em;
+    padding: 1em 3em;
 
     display: flex;
     flex-direction: column;
@@ -50,8 +50,6 @@ export default {
     justify-content: center;
 }
 .note h3, .note input {
-    /* width: 100%; */
-    /* border: 1px dotted hotpink; */
     flex-grow: 1;
     margin: 0em;
 	font-weight: normal;
@@ -62,42 +60,10 @@ export default {
 }
 
 
-/* .align-top-right {
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	display: flex;
-	flex-direction: column;
-	z-index: 1;
-}
-.grow {
-	flex-grow: 1;
-} */
-/* .floating-icons {
-	font-family: Courier New;
-	font-weight: bold;
-	font-size: 1.2em;
-	display: flex;
-	flex-direction: row;
-	user-select: none;
-}
-.floating-icons > .icon {
-	background-color: var(--icon-bg);
-	border: 1px solid lightgray;
-	border-radius: 0.2em;
-	padding: 0.2em;
-	margin: 0.1em;
-	transition: all 1s;
-}
-.floating-icons .icon:hover {
-	cursor: pointer;
-	background-color: var(--hover-icon-bg);
-} */
 .icon.up {
-    /* height: 1em; */
     display: grid;
-    /* justify-content: center; */
     align-items: center;
+	justify-content: center;
 }
 
 </style>

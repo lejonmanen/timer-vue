@@ -15,18 +15,20 @@
 		<div class="align-top-right">
 			<div class="floating-icons">
 				<div class="grow"> </div>
+				<div class="icon settings" @click="showSettings = !showSettings"> ⚙️️ </div>
 				<div v-if="!isTop" class="icon up" @click="$emit('up')">
                     <UpArrow />
                 </div>
-				<div class="icon settings" @click="showSettings = !showSettings"> ⚙️️ </div>
 				<div class="icon close" @click="doClose"> 🗑️ </div>
 			</div>
 			<div class="settings-menu" v-show="showSettings">
 				<label> Counting {{countUp ? 'up' : 'down'}}
+					<div class="separator"></div>
 					<OnOff @toggle="countUp = !countUp" :initial="true"></OnOff>
 				</label>
 				<input type="text" v-model="durationRaw" :disabled="countUp" />
 				<label> {{showTenths ? 'Show' : 'Hide'}} tenths
+					<div class="separator"></div>
 					<OnOff @toggle="showTenths = !showTenths" :initial="false"></OnOff>
 				</label>
 			</div>
@@ -122,7 +124,6 @@ export default {
 					// console.log('interval', this.seconds);
 				}, DELAY)
 			} else {
-				console.log('count down');
 				this.startTime = (new Date()).getTime();
 				this.intervalId = window.setInterval(() => {
 					let now = (new Date()).getTime()
@@ -189,16 +190,28 @@ export default {
 
 .settings-menu {
 	z-index: 2;
+	position: absolute;
+	right: 2.3em;
 	background-color: var(--icon-bg);
 	font-size: 1.05em;
 	padding: 0.2em 1em;
 	display: inline-flex;
 	flex-direction: column;
 	text-align: left;
-	width: 8em;
+	width: 11em;
 	margin-top: 0em;
 	border: 1px solid lightgray;
 	border-radius: 0.2em;
+}
+.settings-menu label {
+	line-height: 2em;
+	/* border: 1px dotted black; */
+	display: flex;
+	flex-direction: row;
+}
+.settings-menu .separator {
+	flex-grow: 1;
+	/* border: 1px dashed red; */
 }
 
 .timer {

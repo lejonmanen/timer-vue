@@ -2,9 +2,10 @@
     <div class="component">
         Select theme
         <div>
-            <button @click="switchTheme('')" class="ghost"> Light </button>
-            <button @click="switchTheme('dark')" class="ghost"> Dark </button>
-            <button @click="switchTheme('forest')" class="ghost"> Forest </button>
+            <button @click="switchTheme('')" :class="t1class"> Light </button>
+            <button @click="switchTheme('dark')" :class="t2class"> Dark </button>
+            <button @click="switchTheme('forest')" :class="t3class"> Forest </button>
+            <button @click="switchTheme('orange')" :class="t4class"> Orange </button>
         </div>
     </div>
 </template>
@@ -17,10 +18,25 @@ export default {
     data: () => ({
         theme: ''  // theme corresponds with value in global.css
     }),
+	computed: {
+		t1class() {
+			return 'ghost' + (this.theme == '' ? ' selected' : '')
+		},
+		t2class() {
+			return 'ghost' + (this.theme == 'dark' ? ' selected' : '')
+		},
+		t3class() {
+			return 'ghost' + (this.theme == 'forest' ? ' selected' : '')
+		},
+		t4class() {
+			return 'ghost' + (this.theme == 'orange' ? ' selected' : '')
+		},
+	},
 	mounted() {
         let localTheme = localStorage.getItem(LS_KEY);
 		if( !LS_KEY ) return;
         document.documentElement.setAttribute('data-theme', localTheme);
+		this.theme = localTheme
 	},
 	methods: {
 		switchTheme(newTheme) {
@@ -34,6 +50,9 @@ export default {
 
 <style scoped>
 .component {
-
+	color: var(--text);
+}
+button.ghost.selected {
+	background-color: var(--button-hover);
 }
 </style>

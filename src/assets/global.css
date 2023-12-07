@@ -41,6 +41,20 @@
 	--body-bg: #064806;
 }
 
+[data-theme="orange"] {
+	--running-bg: #D09B39;
+	--paused-bg: #DED0B7;
+	--text: #422E09;
+	--hover-icon-bg: #C9C3B9;
+	--icon-bg: #F7F7F7;
+	--button-bg: #D6961E;
+	--button-border: #D6961E;
+	--ghost-bg: transparent;
+	--button-hover: #F6C05C;
+	--overdue-bg: #EC9262;
+	--body-bg: #E1B972;
+}
+
 /* General styles */
 body {
 	margin: 0em;
