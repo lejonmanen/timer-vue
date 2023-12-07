@@ -6,13 +6,15 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "cd dist/ && git init && git add --all && git commit -m Deploy && git remote add origin https://github.com/lejonmanen/timer-vue.git && git push origin main:gh-pages && rm -rf .git/"
+	"predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "vue": "^3.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.0",
+    "gh-pages": "^6.1.0",
     "vite": "^4.3.5"
   }
 }
