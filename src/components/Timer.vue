@@ -28,7 +28,7 @@
 			<div class="settings-menu" v-show="showSettings">
 				<label> Counting {{countUp ? 'up' : 'down'}}
 					<div class="separator"></div>
-					<OnOff @toggle="countUp = !countUp" :initial="true"></OnOff>
+					<OnOff @toggle="countUp = !countUp; reset()" :initial="true"></OnOff>
 				</label>
 				<input type="text" v-model="durationRaw" :disabled="countUp" />
 				<label> {{showTenths ? 'Show' : 'Hide'}} tenths
@@ -89,7 +89,7 @@ export default {
 		},
 		displayTime() {
 			let total = this.seconds + (this.countUp ? this.prevSeconds : 0)
-			console.log('Timer.displayTime', total);
+			// console.log('Timer.displayTime', total);
 			let t = getClockComponents(total)
 
 			let result = `${formatNumber(t.minutes)}:${formatNumber(t.seconds)}`

@@ -48,7 +48,6 @@ export default {
 			if( (typeof countdown) === 'boolean' ) {
 				o.countdown = countdown
 			}
-			console.log('App.addWidget', o);
 			this.ts.push(o)
 		},
 		remove(id) {
