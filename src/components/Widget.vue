@@ -1,6 +1,6 @@
 <template>
     <div class="widget">
-        <Timer v-if="type=='timer'" :isTop="isTop" @close="$emit('close', id)" @up="$emit('up', id)" />
+        <Timer v-if="type=='timer'" :isTop="isTop" :countdown="countdown" @close="$emit('close', id)" @up="$emit('up', id)" />
         <Note v-if="type=='note'" :isTop="isTop" @close="$emit('close', id)" @up="$emit('up', id)" />
     </div>
 </template>
@@ -10,7 +10,7 @@ import Timer from './Timer.vue'
 import Note from './Note.vue'
 export default {
     components: { Timer, Note },
-    props: { type: String, id: Number, isTop: { type: Boolean, value: false } },
+    props: { type: String, id: Number, isTop: { type: Boolean, value: false }, countdown: { type: Boolean, value: false } },
     data: () => ({
 
     })

@@ -42,7 +42,8 @@
 }
 
 [data-theme="orange"] {
-	--running-bg: #D09B39;
+	/* --running-bg: #835e1b; */
+	--running-bg: #e5af4a;
 	--paused-bg: #DED0B7;
 	--text: #422E09;
 	--hover-icon-bg: #C9C3B9;

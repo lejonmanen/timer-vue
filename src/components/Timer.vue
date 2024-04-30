@@ -1,3 +1,7 @@
+<script setup>
+// const props = defineProps(['isTop', 'countdown'])
+</script>
+
 <template>
 	<div :class="timerClass">
 		<div class="row">
@@ -44,22 +48,26 @@ import { formatNumber, getClockComponents } from '../utils/funcs.js';
 const STOPPED = 1, STARTED = 2, PAUSED = 3;
 export default {
 	components: { OnOff, UpArrow },
-	props: ['isTop'],
-	data: () => ({
+	props: {
+		isTop: { type: Boolean, required: false },
+		countdown: { type: Boolean, required: false }
+	},
+	data() { //console.log('Timer.data countdown', this.countdown);
+		return {
 		state: STOPPED,
-		seconds: 0,
+		seconds: 15*60,
 		prevSeconds: 0,
 		intervalId: null,
 		startTime: null,
-		countUp: true,
+		countUp: !this.countdown,
 		// duration: 10,   // duration in seconds, used for counting down
-		durationRaw: '1',  // duration in minutes
-		timeLeft: 10,
+		durationRaw: '15',  // duration in minutes
+		timeLeft: 15*60,
 		showSettings: false,
-		title: 'Timer',
+		title: 'Break',
 		editingTitle: false,
 		showTenths: false
-	}),
+	}},
 	computed: {
 		timerClass() {
 			return "timer " + (this.isRunning ? 'running' : 'paused') + ' ' + (this.isOverdue ? 'overdue' : '')
@@ -81,6 +89,7 @@ export default {
 		},
 		displayTime() {
 			let total = this.seconds + (this.countUp ? this.prevSeconds : 0)
+			console.log('Timer.displayTime', total);
 			let t = getClockComponents(total)
 
 			let result = `${formatNumber(t.minutes)}:${formatNumber(t.seconds)}`

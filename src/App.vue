@@ -5,9 +5,11 @@
 <template>
 	<div id="app">
 		<Widget v-for="(t, index) in ts" :key="t.id" :type="t.type" :id="t.id"
-		:isTop="index === 0"
+			:isTop="index === 0"
+			:countdown="!!t.countdown"
 			@close="remove(t.id)"
-			@up="moveUp(t.id)" />
+			@up="moveUp(t.id)"
+			/>
 
 		<button class="ghost"
 			@click="addTimer">Add timer</button>
@@ -15,12 +17,15 @@
 			@click="addText">Add note</button>
 
 		<ThemeSwitcher />
+
+		<About />
 	</div>
 </template>
 
 <script>
 import Widget from './components/Widget.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
+import About from './components/About.vue'
 
 export default {
 	name: 'App',
@@ -32,14 +37,18 @@ export default {
 	}),
 	methods: {
 		addTimer() {
-			this.addWidget('timer')
+			this.addWidget('timer', true)
 		},
 		addText() {
 			this.addWidget('note')
 		},
-		addWidget(type) {
+		addWidget(type, countdown=undefined) {
 			let id = this.getNewId(this.ts)
 			let o = { type: type, id: id }
+			if( (typeof countdown) === 'boolean' ) {
+				o.countdown = countdown
+			}
+			console.log('App.addWidget', o);
 			this.ts.push(o)
 		},
 		remove(id) {
