@@ -56,6 +56,21 @@
 	--body-bg: #E1B972;
 }
 
+[data-theme="xmas"] {
+	--running-bg: #91060d;
+	--paused-bg: #	--button-bg: #187f42;
+;
+	--text: #fbdede;
+	--hover-icon-bg: #C9C3B9;
+	--icon-bg: #F7F7F7;
+	--button-bg: #187f42;
+	--button-border: black;
+	--ghost-bg: transparent;
+	--button-hover: #22B55D;
+	--overdue-bg: #D32A2A;
+	--body-bg: #165b33;
+}
+
 /* General styles */
 body {
 	margin: 0em;

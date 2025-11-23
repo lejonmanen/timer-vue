@@ -6,6 +6,7 @@
             <button @click="switchTheme('dark')" :class="t2class"> Dark </button>
             <button @click="switchTheme('forest')" :class="t3class"> Forest </button>
             <button @click="switchTheme('orange')" :class="t4class"> Orange </button>
+            <button @click="switchTheme('xmas')" :class="t5class"> Christmas </button>
         </div>
     </div>
 </template>
@@ -30,6 +31,9 @@ export default {
 		},
 		t4class() {
 			return 'ghost' + (this.theme == 'orange' ? ' selected' : '')
+		},
+		t5class() {
+			return 'ghost' + (this.theme == 'xmas' ? ' selected' : '')
 		},
 	},
 	mounted() {
